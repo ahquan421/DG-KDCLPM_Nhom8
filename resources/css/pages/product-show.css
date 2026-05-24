@@ -1,0 +1,22 @@
+.product-show {
+
+  .table th,
+  .table td {
+    vertical-align: top;
+  }
+
+  .desc {
+    white-space: pre-line;      
+    overflow-wrap: anywhere;   
+    word-break: break-word;   
+  }
+
+  .product-image {
+    max-height: 300px;
+    object-fit: contain;
+  }
+
+  .card {
+    border-radius: 16px;
+  }
+}

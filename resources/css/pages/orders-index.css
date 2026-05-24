@@ -1,0 +1,69 @@
+.card-ui {
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.tabs-wrap {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 6px;
+  background: #fff;
+}
+
+.tab-btn {
+  border-radius: 999px;
+  padding: .45rem .9rem;
+  font-weight: 600;
+  border: 0;
+  background: transparent;
+  color: #6b7280;
+}
+
+.tab-active {
+  background: #e7f0ff;
+  color: #2563eb;
+}
+
+.table-rounded thead th {
+  background: #f8fafc;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.thumb {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  object-fit: cover;
+  background: #f3f4f6;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+}
+
+.icon-btn:hover {
+  background: #f9fafb;
+}
+
+.search-input {
+  border-radius: 12px;
+  padding: .6rem .9rem .6rem 2.2rem;
+  border: 1px solid #e5e7eb;
+}
+
+.search-ico {
+  position: absolute;
+  left: .8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+}

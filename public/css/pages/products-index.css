@@ -1,0 +1,76 @@
+/* ===== Layout danh sách sách + bộ lọc ===== */
+.bookstore .container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+/* ===== Filter Sidebar ===== */
+.filter-sidebar {
+  flex-shrink: 0;
+  width: 250px;
+  border-radius: 10px;
+}
+
+.filter-sidebar h5 {
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.filter-sidebar h6 {
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+/* ===== Book Item giữ nguyên style gốc ===== */
+.book-item {
+  background: #fff;
+  padding: 16px;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  transition: 0.3s;
+}
+
+.book-item:hover {
+  transform: translateY(-5px);
+}
+
+.book-item img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.book-item h5 {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.book-item .price {
+  color: #ef4444;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* ===== Nút Add to Cart ===== */
+.btn-add {
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-add:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
+}

@@ -1,0 +1,76 @@
+.products-index {
+
+  .card {
+    border-radius: 16px;
+  }
+
+  .table thead th {
+    font-weight: 700;
+    color: #374151;
+  }
+
+  .table tbody td {
+    vertical-align: middle;
+  }
+
+  .badge {
+    border-radius: 9999px;
+  }
+
+  .btn {
+    border-radius: 10px;
+  }
+
+  .product-thumb {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+
+  .card-ui {
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    background: #fff;
+  }
+
+  /* Ô tìm kiếm */
+  .search-input {
+    border-radius: 12px;
+    padding: 0.6rem 0.9rem 0.6rem 2.2rem;
+    border: 1px solid #e5e7eb;
+  }
+
+  .search-ico {
+    position: absolute;
+    left: 0.8rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+  }
+
+  .btn-outline-secondary,
+  .btn-primary {
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  .btn-outline-secondary {
+    border-color: #e5e7eb;
+    color: #374151;
+    background: #fff;
+  }
+
+  .btn-outline-secondary:hover {
+    background: #f9fafb;
+  }
+
+  .btn-primary {
+    background: #4B49AC;
+    border-color: #4B49AC;
+  }
+
+  .btn-primary:hover {
+    background: #1d4ed8;
+  }
+}
