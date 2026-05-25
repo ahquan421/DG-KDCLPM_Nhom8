@@ -34,8 +34,8 @@ class AdminController extends Controller
         $recentOrdersTotal = $recentOrders->sum('total_money');
 
         // ===== DOANH THU THEO THÁNG / NĂM =====
-        $revenuesQuery = Order::selectRaw('MONTH(order_date) as month, SUM(total_money) as total')
-            ->whereYear('order_date', $year)
+        $revenuesQuery = Order::selectRaw('MONTH(date) as month, SUM(total_money) as total')
+            ->whereYear('date', $year)
             ->whereIn('status', ['completed', 'paid', 'done'])
             ->groupBy('month')
             ->orderBy('month');
@@ -47,9 +47,9 @@ class AdminController extends Controller
         $revenues = $revenuesQuery->get();
 
         // Dữ liệu cho biểu đồ và tổng kết
-        $months = $revenues->pluck('month');   
-        $totals = $revenues->pluck('total');   
-        $totalYear = $revenues->sum('total'); 
+        $months = $revenues->pluck('month');
+        $totals = $revenues->pluck('total');
+        $totalYear = $revenues->sum('total');
 
         // ===== TOP 5 SẢN PHẨM BÁN CHẠY =====
         $topProductsQuery = DB::table('order_details')
@@ -63,11 +63,12 @@ class AdminController extends Controller
                 DB::raw('SUM(order_details.price * order_details.quantity) as total_revenue')
             )
             ->whereIn('orders.status', ['completed', 'paid', 'done'])
-            ->whereYear('orders.order_date', $year);
+            ->whereYear('orders.date', $year);
 
         if ($month) {
-            $topProductsQuery->whereMonth('orders.order_date', $month);
+            $topProductsQuery->whereMonth('orders.date', $month);
         }
+
 
         $topProducts = $topProductsQuery
             ->groupBy('products.id', 'products.name', 'products.price')
