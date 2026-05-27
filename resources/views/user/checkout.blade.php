@@ -12,10 +12,10 @@
 
     <!-- Nút quay lại -->
     <div class="mb-3">
-        <a href="{{ session('back_book', route('user.dashboard')) }}" class="btn btn-outline-secondary">🔙 Quay lại</a>
+        <a href="{{ session('back_book', route('user.dashboard')) }}" class="btn btn-outline-secondary">Quay lại</a>
     </div>
 
-    <h2 class="mb-4">🛒 Thanh toán sách</h2>
+    <h2 class="mb-4">Sản Phẩm bạn đã chọn </h2>
 
     <div class="card p-4 shadow-sm">
         <div class="row">
@@ -32,7 +32,7 @@
                 <p><strong>Số lượng còn:</strong> {{ $book->quantity }}</p>
 
                 <!-- Form Thanh toán -->
-                <form method="POST" action="{{ route('checkout.process', $book->id) }}">
+                <form method="POST" action="{{ route('user.checkout.process', $book->id) }}">
                     @csrf
 
                     <!-- Số lượng mua -->
@@ -61,7 +61,7 @@
                         <p class="fs-5"><span id="thanhTien"></span> ₫</p>
                     </div>
 
-                    <button type="submit" class="btn btn-success mt-2">✅ Thanh toán</button>
+                    <button type="submit" class="btn btn-success mt-2">Đặt hàng</button>
                 </form>
             </div>
         </div>

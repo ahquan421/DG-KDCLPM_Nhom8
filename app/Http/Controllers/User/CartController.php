@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,19 +17,12 @@ class CartController extends Controller
     public function index()
     {
         $user = Auth::user();
+        $cartItems = Cart::where('user_id', $user->id)->get();
 
-        // Lấy giỏ hàng của người dùng và load thông tin sản phẩm
-        $cartItems = Cart::with('product')
-                        ->where('user_id', $user->id)
-                        ->get();
-
-        // Tính tổng tiền
-        $total = $cartItems->sum(function ($item) {
-            return $item->product->price * $item->quantity;
-        });
-
-        return view('user.cart.index', compact('cartItems', 'total'));
+        return view('user.cart.index', compact('cartItems'));
     }
+
+
 
     /**
      * Thêm sản phẩm vào giỏ
@@ -80,5 +74,24 @@ class CartController extends Controller
             ->delete();
 
         return redirect()->back()->with('success', 'Item removed from cart.');
+    }
+    public function checkoutMultiple(Request $request)
+    {
+        $selected = $request->input('selected_items', []);
+
+        if (empty($selected)) {
+            return redirect()->back()->with('error', 'Vui lòng chọn ít nhất 1 sản phẩm để thanh toán.');
+        }
+
+        $cart = session()->get('cart', []);
+        $books = [];
+
+        foreach ($selected as $id) {
+            if (isset($cart[$id])) {
+                $books[] = $cart[$id];
+            }
+        }
+
+        return view('user.checkout_multiple', compact('books'));
     }
 }

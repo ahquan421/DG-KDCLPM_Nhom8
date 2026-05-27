@@ -12,6 +12,10 @@ class CheckoutController extends Controller
     public function show($id)
     {
         $book = Product::findOrFail($id);
+
+        // ✅ Thêm dòng này để lưu lại trang trước (trang chi tiết sách)
+        session(['back_book' => url()->previous()]);
+
         return view('user.checkout', compact('book'));
     }
 
@@ -33,7 +37,9 @@ class CheckoutController extends Controller
             $total = $total * 0.9; // giảm 10%
         }
 
-        // ⚡ Ở đây bạn có thể tạo Order hoặc redirect tới trang thanh toán thành công
-        return back()->with('success', "Thanh toán thành công. Tổng tiền: " . number_format($total) . " ₫");
+        // (Tuỳ chọn) Xóa session sau khi thanh toán xong
+        session()->forget('back_book');
+
+        return back()->with('success', "✅ Thanh toán thành công! Tổng tiền: " . number_format($total) . " ₫");
     }
 }
