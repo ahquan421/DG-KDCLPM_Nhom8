@@ -13,19 +13,19 @@
 
       <div class="book-list d-flex flex-wrap justify-content-center gap-4">
         @forelse ($products as $book)
-          <div class="book-item text-center p-3 border rounded shadow-sm" style="width: 200px;">
-            <a href="{{ route('user.products.show', $book->id) }}" class="text-decoration-none text-dark">
-              <img src="{{ asset($book->image) }}" alt="{{ $book->name }}" class="img-fluid mb-2" style="height: 250px; object-fit: cover;">
-              <h5 class="mb-2">{{ $book->name }}</h5>
-            </a>
-            <p class="price text-danger fw-bold mb-3">{{ number_format($book->price) }} ₫</p>
-            <form action="{{ route('user.cart.add', $book->id) }}" method="POST">
-              @csrf
-              <button type="submit" class="btn-add">🛒 Add to Cart</button>
-            </form>
-          </div>
+        <div class="book-item text-center p-3 border rounded shadow-sm" style="width: 200px;">
+          <a href="{{ route('user.products.show', $book->id) }}" class="text-decoration-none text-dark">
+            <img src="{{ asset($book->image) }}" alt="{{ $book->name }}" class="img-fluid mb-2" style="height: 250px; object-fit: cover;">
+            <h5 class="mb-2">{{ $book->name }}</h5>
+          </a>
+          <p class="price text-danger fw-bold mb-3">{{ number_format($book->price) }} ₫</p>
+          <form action="{{ route('user.cart.add', $book->id) }}" method="POST">
+            @csrf
+            <button type="submit" class="btn-add">🛒 Add to Cart</button>
+          </form>
+        </div>
         @empty
-          <p class="text-center text-muted">No books available at the moment.</p>
+        <p class="text-center text-muted">No books available at the moment.</p>
         @endforelse
       </div>
 
@@ -43,16 +43,16 @@
         <h6 class="text-uppercase small text-muted mb-2">Category</h6>
         <form method="GET" action="{{ route('user.products.index') }}">
           @foreach ($categories as $category)
-            <div class="form-check mb-1">
-              <input class="form-check-input" type="radio" name="category"
-                     value="{{ $category->id }}"
-                     id="cat{{ $category->id }}"
-                     onchange="this.form.submit()"
-                     {{ request('category') == $category->id ? 'checked' : '' }}>
-              <label class="form-check-label" for="cat{{ $category->id }}">
-                {{ $category->name }}
-              </label>
-            </div>
+          <div class="form-check mb-1">
+            <input class="form-check-input" type="radio" name="category"
+              value="{{ $category->id }}"
+              id="cat{{ $category->id }}"
+              onchange="this.form.submit()"
+              {{ request('category') == $category->id ? 'checked' : '' }}>
+            <label class="form-check-label" for="cat{{ $category->id }}">
+              {{ $category->name }}
+            </label>
+          </div>
           @endforeach
         </form>
       </div>
@@ -67,12 +67,12 @@
       <div class="mb-4">
         <h6 class="text-uppercase small text-muted mb-2">Rating</h6>
         @for ($i = 5; $i >= 1; $i--)
-          <div class="d-flex align-items-center mb-1">
-            <input type="checkbox" id="star{{ $i }}" disabled>
-            <label for="star{{ $i }}" class="ms-1">
-              @for ($s = 1; $s <= $i; $s++) ⭐ @endfor
-            </label>
-          </div>
+        <div class="d-flex align-items-center mb-1">
+          <input type="checkbox" id="star{{ $i }}" disabled>
+          <label for="star{{ $i }}" class="ms-1">
+            @for ($s = 1; $s <= $i; $s++) ⭐ @endfor
+              </label>
+        </div>
         @endfor
       </div>
 

@@ -52,9 +52,9 @@ class ProductController extends Controller
 
         // Lấy các sản phẩm khác cùng danh mục (trừ sản phẩm hiện tại)
         $relatedBooks = Product::where('category_id', $book->category_id)
-                            ->where('id', '!=', $book->id)
-                            ->take(4)
-                            ->get();
+            ->where('id', '!=', $book->id)
+            ->take(4)
+            ->get();
 
         return view('user.products.show', compact('book', 'relatedBooks'));
     }

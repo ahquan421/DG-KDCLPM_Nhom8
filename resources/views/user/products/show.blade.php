@@ -1,104 +1,231 @@
 @extends('layouts.user')
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Readora - Online Bookstore</title>
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-</head>
-<body>
-<div class="container mt-4">
 
-    {{-- ===== Link quay lại (mới) ===== --}}
-    <div class="mb-3">
-        <a href="{{ url('/user/dashboard') }}" class="back-link">← Back</a>
+@section('content')
+
+<div class="product-wrapper">
+
+    <!-- BACK -->
+    <div class="back-box">
+        <a href="{{ url('/user/dashboard') }}" class="back-link">
+            ← Quay lại
+        </a>
     </div>
 
-    {{-- ===== Khu vực chi tiết sản phẩm ===== --}}
-    <div class="product-detail row">
-        <div class="col-md-5">
-            <img src="{{ asset($book->image) }}"
-                 class="img-fluid shadow rounded mb-3"
-                 alt="{{ $book->name }}"
-                 style="height: 350px; object-fit: cover;">
+    <!-- PRODUCT CARD -->
+    <div class="product-card">
+
+        <!-- LEFT -->
+        <div class="product-left">
+
+            <div class="image-box">
+                <img src="{{ asset($book->image) }}"
+                    alt="{{ $book->name }}">
+            </div>
+
         </div>
 
-        {{-- Cột phải: Thông tin sách (giữ mới + phục hồi các dòng đã xoá) --}}
-        <div class="col-md-7 product-info">
+        <!-- RIGHT -->
+        <div class="product-right">
 
-            <h1 class="mb-3 text-primary">{{ $book->name }}</h1>
-            <p><strong>🏢 Nhà xuất bản:</strong> {{ $book->publisher }}</p>
-            <p><strong>✍️ Tác giả:</strong> {{ $book->author }}</p>
-            <p><strong>🏷️ Thể loại (ID):</strong> {{ $book->category_id }}</p>
+            <!-- TITLE -->
+            <h1 class="product-title">
+                {{ $book->name }}
+            </h1>
 
-            {{-- Giá (giữ block giá mới) --}}
-            <div class="price-box mt-3">
-                <span class="price-old">{{ number_format($book->price + 50000) }} VNĐ</span>
-                <span class="price-new">{{ number_format($book->price) }} VNĐ</span>
+            <!-- INFO -->
+            <div class="product-meta">
+
+                <p>
+                    <strong>✍️ Tác giả:</strong>
+                    {{ $book->author }}
+                </p>
+
+                <p>
+                    <strong>🏢 Nhà xuất bản:</strong>
+                    {{ $book->publisher }}
+                </p>
+
+                <p>
+                    <strong>📚 Thể loại:</strong>
+                    {{ $book->category_id }}
+                </p>
+
             </div>
 
-            {{-- Số lượng còn (phục hồi) + các chi tiết ngắn (mới) --}}
-            <h4 class="text-danger mt-3">Còn lại: {{ $book->quantity }} cuốn</h4>
+            <!-- PRICE -->
+            <div class="price-section">
 
-            <div class="detail-list mt-3">
-                <p><span class="detail-label">Nhà xuất bản:</span> {{ $book->publisher }}</p>
-                <p><span class="detail-label">Thể loại:</span> {{ $book->category_id }}</p>
-                <p><span class="detail-label">Số lượng còn:</span> {{ $book->quantity }}</p>
-                <p><span class="detail-label">Số trang:</span> {{ $book->page }}</p>
+                <span class="price-old">
+                    {{ number_format($book->price + 50000) }}đ
+                </span>
+
+                <span class="discount">
+                    -20%
+                </span>
+
+                <div class="price-new">
+                    {{ number_format($book->price) }}đ
+                </div>
+
             </div>
 
-            {{-- Nút mua & thêm giỏ (GIỮ MỚI) --}}
-            <div class="d-flex gap-3 mt-4">
-                <form action="{{ route('user.checkout.show', $book->id) }}" method="GET" class="d-flex align-items-center gap-2">
-                    <input type="number" name="quantity" value="1" min="1" max="{{ $book->quantity }}" class="form-control" style="width: 80px;">
-                    <button class="btn btn-red">Mua ngay</button>
+            <!-- STOCK -->
+            <div class="stock-box">
+                Còn lại:
+                <strong>{{ $book->quantity }}</strong>
+                cuốn
+            </div>
+
+            <!-- ACTION -->
+            <div class="action-box">
+
+                <!-- BUY NOW -->
+                <form action="{{ route('user.checkout.show', $book->id) }}"
+                    method="GET"
+                    class="action-form">
+
+                    <input
+                        type="number"
+                        name="quantity"
+                        value="1"
+                        min="1"
+                        max="{{ $book->quantity }}"
+                        class="qty-input">
+
+                    <button class="buy-btn">
+                        ⚡ Mua ngay
+                    </button>
+
                 </form>
 
-                <form method="POST" action="{{ route('user.cart.add', $book->id) }}" class="d-flex align-items-center gap-2">
+                <!-- CART -->
+                <form method="POST"
+                    action="{{ route('user.cart.add', $book->id) }}"
+                    class="action-form">
+
                     @csrf
-                    <input type="number" name="quantity" value="1" min="1" max="{{ $book->quantity }}" class="form-control" style="width: 80px;">
-                    <button type="submit" class="btn btn-yellow">Thêm vào giỏ hàng</button>
-                    <a href="{{ route('user.cart.index') }}" class="btn btn-outline-primary">🛒 Xem giỏ hàng</a>
+
+                    <input
+                        type="number"
+                        name="quantity"
+                        value="1"
+                        min="1"
+                        max="{{ $book->quantity }}"
+                        class="qty-input">
+
+                    <button type="submit"
+                        class="cart-btn">
+                        🛒 Thêm vào giỏ
+                    </button>
+
+                    <a href="{{ route('user.cart.index') }}"
+                        class="view-cart-btn">
+                        Xem giỏ
+                    </a>
+
                 </form>
+
             </div>
 
-            {{-- Shipping box (GIỮ MỚI) --}}
-            <div class="shipping-box mt-4">
-                <p><span>✔</span> Free Xpress Shipping on orders over 149.000 ₫</p>
-                <p><span>✔</span> Order before 12:00pm for same day dispatch</p>
-                <p><span>✔</span> Support & ordering 7 days a week</p>
+            <!-- SHIPPING -->
+            <div class="shipping-box">
+
+                <p>
+                    ✔ Free shipping cho đơn từ 149.000đ
+                </p>
+
+                <p>
+                    ✔ Hỗ trợ đổi trả trong 7 ngày
+                </p>
+
+                <p>
+                    ✔ Giao hàng nhanh toàn quốc
+                </p>
+
             </div>
+
         </div>
+
     </div>
 
-    {{-- Tabs + mô tả (GIỮ MỚI) --}}
-    <div class="tabs mt-5">
-        <button class="active">Mô tả</button>
-        <button>Đánh giá</button>
-        <button>Giới thiệu bạn bè</button>
-    </div>
-    <div class="desc mt-3">
-        {!! $book->description !!}
+    <!-- DESCRIPTION -->
+    <div class="content-card">
+
+        <div class="tabs">
+
+            <button class="active">
+                Mô tả sản phẩm
+            </button>
+
+            <button>
+                Thông tin
+            </button>
+
+            <button>
+                Đánh giá
+            </button>
+
+        </div>
+
+        <div class="desc">
+            {!! $book->description !!}
+        </div>
+
     </div>
 
-    {{-- BẢNG “Thông tin chi tiết” (PHỤC HỒI) --}}
-    <div class="row mt-5">
-        <div class="col-12">
-            <h4 class="text-secondary">📘 Thông tin chi tiết</h4>
-            <table class="table table-bordered mt-3">
-                <tr><th>Tên sách</th><td>{{ $book->name }}</td></tr>
-                <tr><th>Tác giả</th><td>{{ $book->author }}</td></tr>
-                <tr><th>Nhà xuất bản</th><td>{{ $book->publisher }}</td></tr>
-                <tr><th>Năm xuất bản</th><td>{{ $book->year_of_publication }}</td></tr>
-                <tr><th>Giá bán</th><td>{{ number_format($book->price) }} đ</td></tr>
-                <tr><th>Số lượng còn lại</th><td>{{ $book->quantity }}</td></tr>
-                <tr><th>Số trang</th><td>{{ $book->page }}</td></tr>
-                <tr><th>Mô tả</th><td>{!! $book->description !!}</td></tr>
-            </table>
-        </div>
+    <!-- DETAIL TABLE -->
+    <div class="content-card">
+
+        <h3 class="detail-title">
+            📘 Thông tin chi tiết
+        </h3>
+
+        <table class="detail-table">
+
+            <tr>
+                <th>Tên sách</th>
+                <td>{{ $book->name }}</td>
+            </tr>
+
+            <tr>
+                <th>Tác giả</th>
+                <td>{{ $book->author }}</td>
+            </tr>
+
+            <tr>
+                <th>Nhà xuất bản</th>
+                <td>{{ $book->publisher }}</td>
+            </tr>
+
+            <tr>
+                <th>Năm xuất bản</th>
+                <td>{{ $book->year_of_publication }}</td>
+            </tr>
+
+            <tr>
+                <th>Giá bán</th>
+                <td>{{ number_format($book->price) }}đ</td>
+            </tr>
+
+            <tr>
+                <th>Số lượng còn lại</th>
+                <td>{{ $book->quantity }}</td>
+            </tr>
+
+            <tr>
+                <th>Số trang</th>
+                <td>{{ $book->page }}</td>
+            </tr>
+
+            <tr>
+                <th>Mô tả</th>
+                <td>{!! $book->description !!}</td>
+            </tr>
+
+        </table>
+
     </div>
 
 </div>
-</body>
-</html>
+
+@endsection
