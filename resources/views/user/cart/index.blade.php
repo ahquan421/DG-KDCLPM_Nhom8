@@ -1,72 +1,192 @@
 @extends('layouts.user')
 
-@section('title', 'Shopping Cart - Readora')
+@section('title', 'Giỏ hàng - Readora')
 
 @section('content')
-<div class="container py-5">
-  <h3 class="fw-bold mb-4">Your Cart <span class="text-muted small">({{ $cartItems->count() }})</span></h3>
 
-  @if($cartItems->count() > 0)
-  <div class="table-responsive">
-    <table class="table align-middle">
-      <tbody>
+<div class="cart-page">
+
+  <div class="container py-5">
+
+    <div class="cart-header mb-4">
+      <h2>
+        🛒 Giỏ hàng
+        <span>({{ $cartItems->count() }} sản phẩm)</span>
+      </h2>
+    </div>
+
+    @if($cartItems->count() > 0)
+
+    <!-- FORM CHO MUA NHIỀU -->
+    <form action="{{ route('user.checkout.multiple') }}"
+      method="POST">
+
+      @csrf
+
+      <div class="cart-list">
+
         @foreach($cartItems as $item)
-        <tr class="cart-row align-middle border-bottom">
-          <!-- Checkbox -->
-          <td width="5%">
-            <input type="checkbox" class="form-check-input">
-          </td>
 
-          <!-- Image + Name -->
-          <td width="45%">
-            <div class="d-flex align-items-center">
-              <img src="{{ asset($item->product->image) }}" alt="{{ $item->product->name }}" 
-                   class="rounded" width="70" height="90" style="object-fit: cover;">
-              <div class="ms-3">
-                <h6 class="mb-1 fw-semibold">{{ $item->product->name }}</h6>
-                <p class="text-muted mb-0">{{ number_format($item->product->price, 0, ',', '.') }} ₫</p>
-              </div>
+        <div class="cart-item">
+
+          <div class="cart-left">
+
+            <!-- checkbox -->
+            <input type="checkbox"
+              name="selected_items[]"
+              value="{{ $item->id }}"
+              class="cart-checkbox"
+              data-price="{{ $item->product->price * $item->quantity }}">
+
+            <!-- ảnh -->
+            <div class="cart-image">
+              <img src="{{ asset($item->product->image) }}"
+                alt="{{ $item->product->name }}">
             </div>
-          </td>
 
-          <!-- Quantity -->
-          <td width="25%">
-            <form action="{{ route('user.cart.update', $item->id) }}" method="POST" class="d-flex align-items-center justify-content-center">
-              @csrf
-              @method('PUT')
-              <button type="submit" name="action" value="decrease" class="btn btn-light border rounded-circle px-2 py-1">−</button>
-              <span class="mx-3 fw-bold">{{ $item->quantity }}</span>
-              <button type="submit" name="action" value="increase" class="btn btn-light border rounded-circle px-2 py-1">+</button>
-            </form>
-          </td>
+            <!-- info -->
+            <div class="cart-info">
 
-          <!-- Total -->
-          <td width="25%" class="text-end fw-bold text-dark">
-            {{ number_format($item->product->price * $item->quantity, 0, ',', '.') }} ₫
-          </td>
-        </tr>
+              <h3 class="book-name">
+                {{ $item->product->name }}
+              </h3>
+
+              <p>
+                Số lượng:
+                <strong>
+                  {{ $item->quantity }}
+                </strong>
+              </p>
+
+              <p class="price">
+                {{ number_format($item->product->price * $item->quantity, 0, ',', '.') }} ₫
+              </p>
+
+            </div>
+
+          </div>
+
+          <!-- RIGHT -->
+          <div class="cart-right">
+
+            <!-- mua 1 sản phẩm -->
+            <a href="{{ route('user.checkout.show', ['id' => $item->product->id]) }}"
+              class="buy-btn">
+
+              🛒 Mua ngay
+
+            </a>
+
+            <!-- xóa -->
+            <a href="{{ route('user.cart.remove', $item->id) }}"
+              class="remove-btn"
+              onclick="event.preventDefault(); removeItem(this.href)">
+
+              🗑 Xóa
+
+            </a>
+
+          </div>
+
+        </div>
+
         @endforeach
-      </tbody>
-    </table>
+
+      </div>
+
+      <!-- FOOTER -->
+      <div class="checkout-bar">
+
+        <div class="checkout-info">
+
+          Tổng tiền:
+          <strong id="totalPrice">
+            0 ₫
+          </strong>
+
+        </div>
+
+        <button type="submit"
+          class="checkout-btn">
+
+          💳 Mua hàng đã chọn
+
+        </button>
+
+      </div>
+
+    </form>
+
+    @else
+
+    <div class="empty-cart">
+      <h3>🛒 Giỏ hàng đang trống</h3>
+    </div>
+
+    @endif
+
   </div>
 
-  <!-- Summary -->
-  <div class="mt-4 text-end">
-    <h5 class="fw-semibold">
-      Total: 
-      <span class="text-primary fw-bold">
-        {{ number_format($cartItems->sum(fn($i) => $i->product->price * $i->quantity), 0, ',', '.') }} ₫
-      </span>
-    </h5>
-
-    <a href="{{ route('user.checkout.show', ['id' => Auth::id()]) }}" 
-       class="btn btn-dark rounded-pill px-4 py-2 mt-3">
-       Proceed to Checkout →
-    </a>
-  </div>
-
-  @else
-    <p class="text-center text-muted mt-5">Your cart is empty 😢</p>
-  @endif
 </div>
+
+<script>
+  const checkboxes =
+    document.querySelectorAll('.cart-checkbox');
+
+  const totalPrice =
+    document.getElementById('totalPrice');
+
+  function updateTotal() {
+
+    let total = 0;
+
+    checkboxes.forEach(box => {
+
+      if (box.checked) {
+
+        total += Number(box.dataset.price);
+      }
+
+    });
+
+    totalPrice.innerText =
+      total.toLocaleString('vi-VN') + ' ₫';
+  }
+
+  checkboxes.forEach(box => {
+
+    box.addEventListener(
+      'change',
+      updateTotal
+    );
+
+  });
+
+  // xóa sản phẩm
+  function removeItem(url) {
+
+    if (confirm('Bạn có chắc muốn xóa sản phẩm này?')) {
+
+      const form =
+        document.createElement('form');
+
+      form.method = 'POST';
+      form.action = url;
+
+      form.innerHTML = `
+                <input type="hidden"
+                       name="_token"
+                       value="{{ csrf_token() }}">
+
+                <input type="hidden"
+                       name="_method"
+                       value="DELETE">
+            `;
+
+      document.body.appendChild(form);
+      form.submit();
+    }
+  }
+</script>
+
 @endsection

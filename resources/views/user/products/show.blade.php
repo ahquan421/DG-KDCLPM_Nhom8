@@ -36,17 +36,17 @@
             <div class="product-meta">
 
                 <p>
-                    <strong>✍️ Tác giả:</strong>
+                    <strong>Tác giả:</strong>
                     {{ $book->author }}
                 </p>
 
                 <p>
-                    <strong>🏢 Nhà xuất bản:</strong>
+                    <strong>Nhà xuất bản:</strong>
                     {{ $book->publisher }}
                 </p>
 
                 <p>
-                    <strong>📚 Thể loại:</strong>
+                    <strong>Thể loại:</strong>
                     {{ $book->category_id }}
                 </p>
 
@@ -93,7 +93,7 @@
                         class="qty-input">
 
                     <button class="buy-btn">
-                        ⚡ Mua ngay
+                        Mua ngay
                     </button>
 
                 </form>
@@ -115,7 +115,7 @@
 
                     <button type="submit"
                         class="cart-btn">
-                        🛒 Thêm vào giỏ
+                        Thêm vào giỏ
                     </button>
 
                     <a href="{{ route('user.cart.index') }}"
@@ -177,7 +177,7 @@
     <div class="content-card">
 
         <h3 class="detail-title">
-            📘 Thông tin chi tiết
+            Thông tin chi tiết
         </h3>
 
         <table class="detail-table">

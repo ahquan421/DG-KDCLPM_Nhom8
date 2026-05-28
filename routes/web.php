@@ -62,7 +62,7 @@ Route::middleware(['auth', 'userMiddleware'])
 
         // Trang chi tiết sản phẩm
         Route::get('/products/{id}', [UserProductController::class, 'show'])->name('products.show');
-        
+
         // Orders
         Route::get('/orders', [UserController::class, 'orders'])->name('orders.index');
         Route::get('/orders/{id}', [UserController::class, 'showOrder'])->name('orders.show');
@@ -76,6 +76,12 @@ Route::middleware(['auth', 'userMiddleware'])
         // Checkout
         Route::get('/checkout/{id}', [CheckoutController::class, 'show'])->name('checkout.show');
         Route::post('/checkout/{id}', [CheckoutController::class, 'process'])->name('checkout.process');
+        // Checkout nhiều sản phẩm
+        Route::post('/checkout-multiple', [CheckoutController::class, 'showMultiple'])
+            ->name('checkout.multiple');
+
+        Route::post('/checkout-multiple/process', [CheckoutController::class, 'processMultiple'])
+            ->name('checkout.multiple.process');
     });
 
 
