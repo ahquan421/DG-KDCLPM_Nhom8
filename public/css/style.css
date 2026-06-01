@@ -319,64 +319,15 @@ a {
    PRODUCT CARD
 ========================== */
 
-.product-card {
-    background: #fff;
-    border-radius: 30px;
-    padding: 35px;
-    display: flex;
-    gap: 40px;
-    align-items: stretch;
-    box-shadow: 0 10px 35px rgba(0, 0, 0, .08);
-    margin-bottom: 30px;
-}
 
 /* ==========================
    LEFT IMAGE
 ========================== */
 
-.product-left {
-    width: 430px;
-    flex-shrink: 0;
-}
 
-.image-box {
-    width: 100%;
-    height: 620px;
-    border-radius: 28px;
-    overflow: hidden;
-    background: #f8f8f8;
-    border: 1px solid #eee;
-}
 
-.image-box img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-    transition: .4s;
-}
 
-.image-box img:hover {
-    transform: scale(1.03);
-}
 
-/* ==========================
-   RIGHT INFO
-========================== */
-
-.product-right {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.product-title {
-    font-size: 36px;
-    font-weight: 700;
-    color: #111827;
-    line-height: 1.4;
-    margin-bottom: 15px;
-}
 
 /* ==========================
    META INFO
@@ -756,7 +707,7 @@ a {
     background: #fff;
     border-radius: 30px;
     padding: 35px;
-    box-shadow: 0 10px 30px rgba(0,0,0,.06);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .06);
 }
 
 /* ==========================
@@ -832,50 +783,6 @@ a {
 
 .detail-table tr:hover {
     background: #fafafa;
-}
-
-/* ==========================
-   MOBILE
-========================== */
-
-@media(max-width:992px) {
-
-    .product-card {
-        flex-direction: column;
-        padding: 20px;
-    }
-
-    .product-left {
-        width: 100%;
-    }
-
-    .image-box img {
-        height: 420px;
-    }
-
-    .product-title {
-        font-size: 30px;
-    }
-
-    .price-new {
-        font-size: 40px;
-    }
-
-    .action-form {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .buy-btn,
-    .cart-btn,
-    .view-cart-btn {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .qty-input {
-        width: 100%;
-    }
 }
 
 /* ===== Refer ===== */
@@ -1271,6 +1178,7 @@ footer {
     background: #d93f21;
     transform: translateY(-2px);
 }
+
 .checkout-title {
     font-size: 42px;
     font-weight: 700;
@@ -1296,4 +1204,197 @@ footer {
 
 .mb-4 {
     margin-bottom: 30px;
+}
+
+/* =====================================
+   CHECKOUT PAGE - CLEAN VERSION
+===================================== */
+
+.checkout-wrapper {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.checkout-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, .06);
+}
+
+/* địa chỉ */
+
+.checkout-heading {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.address-content strong {
+    font-size: 18px;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.address-content span {
+    color: #666;
+    font-size: 15px;
+}
+
+/* bảng sản phẩm */
+
+.checkout-table-header {
+    display: grid;
+    grid-template-columns: 5fr 1.2fr 1fr 1.3fr;
+    font-weight: 700;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 18px;
+    color: #444;
+}
+
+.checkout-product {
+    display: grid;
+    grid-template-columns: 5fr 1.2fr 1fr 1.3fr;
+    align-items: center;
+    gap: 20px;
+    padding-top: 25px;
+}
+
+/* product left */
+
+.product-info {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.checkout-image {
+    width: 120px;
+    height: 160px;
+    border-radius: 14px;
+    object-fit: cover;
+    border: 1px solid #eee;
+}
+
+.product-info h4 {
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.product-info p {
+    font-size: 15px;
+    color: #777;
+}
+
+/* price */
+
+.price-box,
+.final-price {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ee4d2d;
+}
+
+/* quantity */
+
+.qty-input {
+    width: 90px !important;
+    height: 50px !important;
+    border-radius: 14px;
+    border: 1px solid #ddd;
+    text-align: center;
+    font-size: 18px;
+}
+
+/* lời nhắn + vận chuyển */
+
+.checkout-flex {
+    display: flex;
+    gap: 50px;
+}
+
+.checkout-left,
+.checkout-right {
+    flex: 1;
+}
+
+.checkout-left label,
+.checkout-right h4 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    display: block;
+}
+
+.checkout-input {
+    width: 100%;
+    height: 120px;
+    border-radius: 18px;
+    border: 1px solid #ddd;
+    padding: 18px;
+    resize: none;
+    font-size: 16px;
+}
+
+/* payment */
+
+.price-summary {
+    margin-top: 25px;
+}
+
+.price-summary p {
+    font-size: 22px;
+    margin-bottom: 14px;
+}
+
+.price-summary h3 {
+    font-size: 36px;
+    color: #ee4d2d;
+}
+
+#coupon {
+    width: 300px;
+    height: 55px;
+    border-radius: 16px;
+    border: 1px solid #ddd;
+    padding: 0 18px;
+    font-size: 16px;
+    margin-top: 12px;
+}
+
+.checkout-btn-full {
+    width: 100%;
+    height: 65px;
+    border-radius: 18px;
+    margin-top: 30px;
+    font-size: 22px;
+}
+
+/* mobile */
+
+@media(max-width:992px) {
+
+    .checkout-table-header {
+        display: none;
+    }
+
+    .checkout-product {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .checkout-flex {
+        flex-direction: column;
+    }
+
+    .product-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #coupon {
+        width: 100%;
+    }
 }
