@@ -6,163 +6,161 @@
 
 <div class="cart-page">
 
-```
-<div class="container py-5">
+    ```
+    <div class="container py-5">
 
-    <div class="cart-header mb-4">
-        <h2>
-            🛒 Giỏ hàng
-            <span>({{ $cartItems->count() }} sản phẩm)</span>
-        </h2>
-    </div>
+        <div class="cart-header mb-4">
+            <h2>
+                Giỏ hàng
+                <span>({{ $cartItems->count() }} sản phẩm)</span>
+            </h2>
+        </div>
 
-    @if($cartItems->count() > 0)
+        @if($cartItems->count() > 0)
 
-    <form
-        action="{{ route('user.checkout.multiple') }}"
-        method="POST">
+        <form
+            action="{{ route('user.checkout.multiple') }}"
+            method="POST">
 
-        @csrf
+            @csrf
 
-        <div class="cart-list">
+            <div class="cart-list">
 
-            @foreach($cartItems as $item)
+                @foreach($cartItems as $item)
 
-            <div class="cart-item">
+                <div class="cart-item">
 
-                <div class="cart-left">
+                    <div class="cart-left">
 
-                    <input type="checkbox"
-                        name="selected_items[]"
-                        value="{{ $item->id }}"
-                        class="cart-checkbox"
-                        data-price="{{ $item->product->price * $item->quantity }}">
+                        <input type="checkbox"
+                            name="selected_items[]"
+                            value="{{ $item->id }}"
+                            class="cart-checkbox"
+                            data-price="{{ $item->product->price * $item->quantity }}">
 
-                    <div class="cart-image">
-                        <img src="{{ asset($item->product->image) }}">
+                        <div class="cart-image">
+                            <img src="{{ asset($item->product->image) }}">
+                        </div>
+
+                        <div class="cart-info">
+
+                            <h3 class="book-name">
+                                {{ $item->product->name }}
+                            </h3>
+
+                            <p>
+                                Số lượng:
+                                <strong>{{ $item->quantity }}</strong>
+                            </p>
+
+                            <p class="price">
+                                {{ number_format($item->product->price * $item->quantity,0,',','.') }} ₫
+                            </p>
+
+                        </div>
                     </div>
 
-                    <div class="cart-info">
+                    <div class="cart-right">
 
-                        <h3 class="book-name">
-                            {{ $item->product->name }}
-                        </h3>
+                        <!-- mua 1 -->
+                        <a href="{{ route('user.checkout.show', ['id' => $item->id]) }}"
+                            class="buy-btn">
 
-                        <p>
-                            Số lượng:
-                            <strong>{{ $item->quantity }}</strong>
-                        </p>
+                            Mua ngay
 
-                        <p class="price">
-                            {{ number_format($item->product->price * $item->quantity,0,',','.') }} ₫
-                        </p>
+                        </a>
+
+                        <!-- xóa -->
+                        <form
+                            action="{{ route('user.cart.remove', $item->id) }}"
+                            method="POST">
+
+                            @csrf
+                            @method('DELETE')
+
+                            <button class="remove-btn">
+
+                                Xóa
+
+                            </button>
+
+                        </form>
 
                     </div>
-                </div>
-
-                <div class="cart-right">
-
-                    <!-- mua 1 -->
-                    <a href="{{ route('user.checkout.show', ['id' => $item->id]) }}"
-                        class="buy-btn">
-
-                        Mua ngay
-
-                    </a>
-
-                    <!-- xóa -->
-                    <form
-                        action="{{ route('user.cart.remove', $item->id) }}"
-                        method="POST">
-
-                        @csrf
-                        @method('DELETE')
-
-                        <button class="remove-btn">
-
-                            🗑 Xóa
-
-                        </button>
-
-                    </form>
 
                 </div>
+
+                @endforeach
 
             </div>
 
-            @endforeach
+            <!-- bottom -->
+            <div class="checkout-bar">
 
-        </div>
+                <div class="checkout-info">
 
-        <!-- bottom -->
-        <div class="checkout-bar">
+                    Tổng tiền:
+                    <strong id="totalPrice">
+                        0 ₫
+                    </strong>
 
-            <div class="checkout-info">
+                </div>
 
-                Tổng tiền:
-                <strong id="totalPrice">
-                    0 ₫
-                </strong>
+                <button type="submit"
+                    class="checkout-btn">
+
+                    Mua hàng đã chọn
+
+                </button>
 
             </div>
 
-            <button type="submit"
-                class="checkout-btn">
+        </form>
 
-                💳 Mua hàng đã chọn
+        @else
 
-            </button>
-
+        <div class="empty-cart">
+            <h3>Giỏ hàng đang trống</h3>
         </div>
 
-    </form>
+        @endif
 
-    @else
-
-    <div class="empty-cart">
-        <h3>🛒 Giỏ hàng đang trống</h3>
     </div>
-
-    @endif
-
-</div>
-```
+    ```
 
 </div>
 
 <script>
+    const checkboxes =
+        document.querySelectorAll('.cart-checkbox');
 
-const checkboxes =
-document.querySelectorAll('.cart-checkbox');
+    const totalPrice =
+        document.getElementById('totalPrice');
 
-const totalPrice =
-document.getElementById('totalPrice');
+    function updateTotal() {
 
-function updateTotal() {
+        let total = 0;
 
-    let total = 0;
+        checkboxes.forEach(box => {
+
+            if (box.checked) {
+
+                total += Number(box.dataset.price);
+            }
+
+        });
+
+        totalPrice.innerText =
+            total.toLocaleString('vi-VN') + ' ₫';
+    }
 
     checkboxes.forEach(box => {
 
-        if(box.checked){
-
-            total += Number(box.dataset.price);
-        }
-
+        box.addEventListener(
+            'change',
+            updateTotal
+        );
     });
-
-    totalPrice.innerText =
-        total.toLocaleString('vi-VN') + ' ₫';
-}
-
-checkboxes.forEach(box => {
-
-    box.addEventListener(
-        'change',
-        updateTotal
-    );
-});
-
 </script>
 
 @endsection

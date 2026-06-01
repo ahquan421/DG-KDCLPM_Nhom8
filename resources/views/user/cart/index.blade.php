@@ -10,7 +10,7 @@
 
     <div class="cart-header mb-4">
       <h2>
-        🛒 Giỏ hàng
+        Giỏ hàng
         <span>({{ $cartItems->count() }} sản phẩm)</span>
       </h2>
     </div>
@@ -73,7 +73,7 @@
             <a href="{{ route('user.checkout.show', ['id' => $item->product->id]) }}"
               class="buy-btn">
 
-              🛒 Mua ngay
+              Mua ngay
 
             </a>
 
@@ -82,7 +82,7 @@
               class="remove-btn"
               onclick="event.preventDefault(); removeItem(this.href)">
 
-              🗑 Xóa
+              Xóa
 
             </a>
 
@@ -109,7 +109,7 @@
         <button type="submit"
           class="checkout-btn">
 
-          💳 Mua hàng đã chọn
+          Mua hàng đã chọn
 
         </button>
 
@@ -120,7 +120,7 @@
     @else
 
     <div class="empty-cart">
-      <h3>🛒 Giỏ hàng đang trống</h3>
+      <h3>Giỏ hàng đang trống</h3>
     </div>
 
     @endif

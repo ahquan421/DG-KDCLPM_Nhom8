@@ -1,201 +1,304 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
     <title>Readora - Thanh toán</title>
 
     <link rel="stylesheet"
-          href="{{ asset('css/style.css') }}?v={{ time() }}">
+        href="{{ asset('css/style.css') }}?v={{ time() }}">
 </head>
 
 <body>
 
-<x-app-layout>
+    <x-app-layout>
 
-<div class="product-wrapper">
+        <div class="product-wrapper">
 
-    <!-- Nút quay lại -->
-    <div class="back-box">
-        <a href="{{ route('user.cart.index') }}"
-           class="back-link">
-            ← Quay lại giỏ hàng
-        </a>
-    </div>
+            <!-- Nút quay lại -->
+            <div class="back-box">
+                <a href="{{ route('user.cart.index') }}"
+                    class="back-link">
 
-    <h2 class="detail-title">
-        💳 Sản phẩm bạn đã chọn
-    </h2>
+                    ← Quay lại giỏ hàng
 
-    <form method="POST"
-          action="{{ route('user.checkout.multiple.process') }}">
+                </a>
+            </div>
 
-        @csrf
+            <!-- Địa chỉ -->
+            <div class="content-card mb-4">
 
-        @php
-            $tongTien = 0;
-        @endphp
+                <h2 class="checkout-heading">
+                    📍 Địa Chỉ Nhận Hàng
+                </h2>
 
-        @foreach ($books as $item)
+                <div class="address-content">
 
-        @php
-            $thanhTien = $item['price'] * $item['quantity'];
-            $tongTien += $thanhTien;
-        @endphp
+                    <strong>
+                        {{ Auth::user()->name ?? 'Người dùng' }}
+                    </strong>
 
-        <div class="product-card mb-4"
-             style="margin-bottom:25px;">
+                    <p>
+                        Địa chỉ chưa cập nhật
+                    </p>
 
-            <!-- LEFT -->
-            <div class="product-left">
-
-                <div class="image-box">
-                    <img src="{{ asset($item['image']) }}"
-                         alt="{{ $item['name'] }}">
                 </div>
 
             </div>
 
-            <!-- RIGHT -->
-            <div class="product-right">
+            <form method="POST"
+                action="{{ route('user.checkout.multiple.process') }}">
 
-                <h2 class="product-title">
-                    {{ $item['name'] }}
-                </h2>
+                @csrf
 
-                <div class="product-meta">
+                @php
+                $tongTien = 0;
+                @endphp
 
-                    <p>
-                        <strong>Giá:</strong>
-                        {{ number_format($item['price']) }} ₫
-                    </p>
+                <!-- Danh sách sản phẩm -->
+                <div class="content-card mb-4">
 
-                    <p>
-                        <strong>Số lượng:</strong>
-                        {{ $item['quantity'] }}
-                    </p>
+                    <div class="checkout-table-header">
+
+                        <span>Sản phẩm</span>
+                        <span>Đơn giá</span>
+                        <span>Số lượng</span>
+                        <span>Thành tiền</span>
+
+                    </div>
+
+                    @foreach ($books as $item)
+
+                    @php
+                    $thanhTien =
+                    $item['price'] * $item['quantity'];
+
+                    $tongTien += $thanhTien;
+                    @endphp
+
+                    <div class="checkout-product">
+
+                        <!-- PRODUCT -->
+                        <div class="product-info">
+
+                            <img src="{{ asset($item['image']) }}"
+                                class="checkout-image"
+                                alt="{{ $item['name'] }}">
+
+                            <div>
+
+                                <h4>
+                                    {{ $item['name'] }}
+                                </h4>
+
+                                <p>
+                                    Tác giả:
+                                    {{ $item['author'] ?? 'Chưa cập nhật' }}
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <!-- PRICE -->
+                        <div class="price-box">
+
+                            {{ number_format($item['price']) }} ₫
+
+                        </div>
+
+                        <!-- QTY -->
+                        <div>
+
+                            {{ $item['quantity'] }}
+
+                        </div>
+
+                        <!-- TOTAL -->
+                        <div class="final-price item-total"
+                            data-price="{{ $thanhTien }}">
+
+                            {{ number_format($thanhTien) }} ₫
+
+                        </div>
+
+                        <!-- hidden -->
+                        <input type="hidden"
+                            name="selected_items[]"
+                            value="{{ $item['id'] }}">
+
+                    </div>
+
+                    @endforeach
 
                 </div>
 
-                <div class="price-section">
+                <!-- lời nhắn + vận chuyển -->
+                <div class="content-card mb-4">
 
-                    <div class="price-new">
-                        Thành tiền:
-                        <span class="item-total">
-                            {{ number_format($thanhTien) }}
-                        </span> ₫
+                    <div class="checkout-flex">
+
+                        <div class="checkout-left">
+
+                            <label>
+                                <strong>
+                                    Lời nhắn
+                                </strong>
+                            </label>
+
+                            <textarea
+                                class="checkout-input"
+                                placeholder="Lưu ý cho người bán..."></textarea>
+
+                        </div>
+
+                        <div class="checkout-right">
+
+                            <h4>
+                                🚚 Phương thức vận chuyển
+                            </h4>
+
+                            <p>
+                                Giao hàng nhanh
+                            </p>
+
+                            <small>
+                                Nhận hàng dự kiến
+                                2-4 ngày
+                            </small>
+
+                        </div>
+
                     </div>
 
                 </div>
 
-                <!-- hidden gửi dữ liệu -->
-                <input type="hidden"
-                       name="selected_items[]"
-                       value="{{ $item['id'] }}">
+                <!-- coupon + tổng -->
+                <div class="content-card">
 
-            </div>
+                    <div class="mb-4">
 
-        </div>
+                        <label>
+                            <strong>
+                                Mã giảm giá
+                            </strong>
+                        </label>
 
-        @endforeach
+                        <input type="text"
+                            id="coupon"
+                            name="coupon"
+                            class="qty-input"
+                            placeholder="Nhập mã giảm giá">
 
-        <!-- Coupon -->
-        <div class="content-card">
+                    </div>
 
-            <div class="mb-3">
-                <label>
-                    <strong>Mã giảm giá:</strong>
-                </label>
+                    <div class="checkout-summary">
 
-                <input type="text"
-                       id="coupon"
-                       name="coupon"
-                       class="qty-input"
-                       style="width:100%;height:55px;"
-                       placeholder="Nhập mã giảm giá">
-            </div>
+                        <p>
 
-            <div style="margin-top:20px;">
+                            Giá gốc:
 
-                <p class="price-old">
-                    Giá gốc:
-                    <span id="giaGoc">
-                        {{ number_format($tongTien) }}
-                    </span> ₫
-                </p>
+                            <strong>
 
-                <div class="price-new">
-                    Tổng tiền:
-                    <span id="tongTien">
-                        {{ number_format($tongTien) }}
-                    </span> ₫
+                                <span id="giaGoc">
+                                    {{ number_format($tongTien) }}
+                                </span>
+
+                                ₫
+
+                            </strong>
+
+                        </p>
+
+                        <p>
+
+                            Tổng tiền:
+
+                            <strong>
+
+                                <span id="tongTien">
+                                    {{ number_format($tongTien) }}
+                                </span>
+
+                                ₫
+
+                            </strong>
+
+                        </p>
+
+                    </div>
+
+                    <button type="submit"
+                        class="buy-btn"
+                        style="margin-top:20px;">
+
+                        Đặt hàng
+
+                    </button>
+
                 </div>
 
-            </div>
-
-            <button type="submit"
-                    class="buy-btn"
-                    style="margin-top:20px; width:100%; height:60px;">
-
-                🛒 Đặt hàng
-
-            </button>
+            </form>
 
         </div>
 
-    </form>
+        <script>
+            const originalPrice = {
+                {
+                    $tongTien
+                }
+            };
 
-</div>
+            const couponInput =
+                document.getElementById('coupon');
 
-<script>
+            const tongTien =
+                document.getElementById('tongTien');
 
-    const originalPrice = {{ $tongTien }};
+            const giaGoc =
+                document.getElementById('giaGoc');
 
-    const couponInput =
-        document.getElementById('coupon');
+            function updatePrice() {
 
-    const tongTien =
-        document.getElementById('tongTien');
+                let finalPrice =
+                    originalPrice;
 
-    const giaGoc =
-        document.getElementById('giaGoc');
+                // coupon giảm 10%
+                if (
+                    couponInput.value
+                    .trim()
+                    .toUpperCase() === 'COLIEN'
+                ) {
 
-    function updatePrice() {
+                    finalPrice =
+                        originalPrice * 0.9;
+                }
 
-        let finalPrice = originalPrice;
+                giaGoc.innerText =
+                    originalPrice
+                    .toLocaleString('vi-VN');
 
-        // mã COLIEN giảm 10%
-        if (
-            couponInput.value
-            .trim()
-            .toUpperCase() === 'COLIEN'
-        ) {
-            finalPrice =
-                originalPrice * 0.9;
-        }
+                tongTien.innerText =
+                    Math.floor(finalPrice)
+                    .toLocaleString('vi-VN');
+            }
 
-        giaGoc.innerText =
-            originalPrice.toLocaleString();
+            couponInput.addEventListener(
+                'input',
+                updatePrice
+            );
 
-        tongTien.innerText =
-            Math.floor(finalPrice)
-            .toLocaleString();
-    }
+            window.addEventListener(
+                'DOMContentLoaded',
+                updatePrice
+            );
+        </script>
 
-    couponInput
-        .addEventListener(
-            'input',
-            updatePrice
-        );
-
-    window.addEventListener(
-        'DOMContentLoaded',
-        updatePrice
-    );
-
-</script>
-
-</x-app-layout>
+    </x-app-layout>
 
 </body>
+
 </html>
