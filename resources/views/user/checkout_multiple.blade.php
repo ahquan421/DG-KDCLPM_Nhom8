@@ -18,7 +18,7 @@
 
         <div class="product-wrapper">
 
-            <!-- Nút quay lại -->
+            <!-- quay lại -->
             <div class="back-box">
                 <a href="{{ route('user.cart.index') }}"
                     class="back-link">
@@ -28,7 +28,7 @@
                 </a>
             </div>
 
-            <!-- Địa chỉ -->
+            <!-- địa chỉ -->
             <div class="content-card mb-4">
 
                 <h2 class="checkout-heading">
@@ -41,15 +41,34 @@
                         {{ Auth::user()->name ?? 'Người dùng' }}
                     </strong>
 
-                    <p>
-                        Địa chỉ chưa cập nhật
-                    </p>
+                    <div style="margin-top:15px;">
+
+                        <input type="text"
+                            name="phone"
+                            form="checkoutForm"
+                            class="checkout-input"
+                            placeholder="Nhập số điện thoại"
+                            required>
+
+                    </div>
+
+                    <div style="margin-top:15px;">
+
+                        <textarea
+                            name="address"
+                            form="checkoutForm"
+                            class="checkout-input"
+                            placeholder="Nhập địa chỉ nhận hàng"
+                            required></textarea>
+
+                    </div>
 
                 </div>
 
             </div>
 
             <form method="POST"
+                id="checkoutForm"
                 action="{{ route('user.checkout.multiple.process') }}">
 
                 @csrf
@@ -58,7 +77,7 @@
                 $tongTien = 0;
                 @endphp
 
-                <!-- Danh sách sản phẩm -->
+                <!-- danh sách sản phẩm -->
                 <div class="content-card mb-4">
 
                     <div class="checkout-table-header">
@@ -74,14 +93,15 @@
 
                     @php
                     $thanhTien =
-                    $item['price'] * $item['quantity'];
+                    $item['price'] *
+                    $item['quantity'];
 
                     $tongTien += $thanhTien;
                     @endphp
 
                     <div class="checkout-product">
 
-                        <!-- PRODUCT -->
+                        <!-- product -->
                         <div class="product-info">
 
                             <img src="{{ asset($item['image']) }}"
@@ -103,23 +123,22 @@
 
                         </div>
 
-                        <!-- PRICE -->
+                        <!-- price -->
                         <div class="price-box">
 
                             {{ number_format($item['price']) }} ₫
 
                         </div>
 
-                        <!-- QTY -->
+                        <!-- quantity -->
                         <div>
 
                             {{ $item['quantity'] }}
 
                         </div>
 
-                        <!-- TOTAL -->
-                        <div class="final-price item-total"
-                            data-price="{{ $thanhTien }}">
+                        <!-- total -->
+                        <div class="final-price">
 
                             {{ number_format($thanhTien) }} ₫
 
@@ -176,7 +195,7 @@
 
                 </div>
 
-                <!-- coupon + tổng -->
+                <!-- voucher + tổng -->
                 <div class="content-card">
 
                     <div class="mb-4">
@@ -266,7 +285,7 @@
                 let finalPrice =
                     originalPrice;
 
-                // coupon giảm 10%
+                // giảm 10%
                 if (
                     couponInput.value
                     .trim()

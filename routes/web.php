@@ -12,7 +12,7 @@ use App\Http\Controllers\User\DashboardController;
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\RevenueController;
 
@@ -64,8 +64,9 @@ Route::middleware(['auth', 'userMiddleware'])
         Route::get('/products/{id}', [UserProductController::class, 'show'])->name('products.show');
 
         // Orders
-        Route::get('/orders', [UserController::class, 'orders'])->name('orders.index');
-        Route::get('/orders/{id}', [UserController::class, 'showOrder'])->name('orders.show');
+        Route::get('/orders', [OrderController::class, 'index'])
+            ->name('orders.index');
+
 
         // Cart
         Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
@@ -82,6 +83,13 @@ Route::middleware(['auth', 'userMiddleware'])
 
         Route::post('/checkout-multiple/process', [CheckoutController::class, 'processMultiple'])
             ->name('checkout.multiple.process');
+
+        // Orders
+        Route::get('/orders', [\App\Http\Controllers\User\OrderController::class, 'index'])
+            ->name('orders.index');
+
+        Route::get('/orders/{id}', [\App\Http\Controllers\User\OrderController::class, 'show'])
+            ->name('orders.show');
     });
 
 

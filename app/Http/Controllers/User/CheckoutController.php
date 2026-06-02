@@ -31,24 +31,23 @@ class CheckoutController extends Controller
 
         $request->validate([
             'quantity' => 'required|integer|min:1|max:' . $book->quantity,
+            'phone' => 'required',
+            'address' => 'required',
         ]);
 
         $quantity = $request->quantity;
 
-        // lấy địa chỉ đầu tiên của user
-        $address = Address::where('user_id', Auth::id())->first();
-
-        // nếu chưa có địa chỉ
-        if (!$address) {
-            return back()->with(
-                'error',
-                'Vui lòng cập nhật địa chỉ trước khi đặt hàng'
-            );
-        }
-
         $total = $book->price * $quantity;
 
-        // lưu orders
+        // lưu địa chỉ
+        $address = Address::create([
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'is_default' => 1,
+            'user_id' => Auth::id(),
+        ]);
+
+        // tạo order
         $order = Order::create([
             'date' => now(),
             'status' => 'pending',
@@ -57,7 +56,7 @@ class CheckoutController extends Controller
             'address_id' => $address->id,
         ]);
 
-        // lưu order_details
+        // order detail
         OrderDetail::create([
             'order_id' => $order->id,
             'product_id' => $book->id,
@@ -67,7 +66,10 @@ class CheckoutController extends Controller
 
         return redirect()
             ->route('user.orders.index')
-            ->with('success', 'Đặt hàng thành công!');
+            ->with(
+                'success',
+                'Đặt hàng thành công!'
+            );
     }
     // ==========================
     // CHECKOUT NHIỀU SẢN PHẨM
@@ -122,12 +124,13 @@ class CheckoutController extends Controller
         );
     }
 
-    // ==========================
-    // PROCESS MULTIPLE
-    // ==========================
-    public function processMultiple(
-        Request $request
-    ) {
+    public function processMultiple(Request $request)
+    {
+        $request->validate([
+            'phone' => 'required',
+            'address' => 'required',
+        ]);
+
         $selectedItems =
             $request->selected_items;
 
@@ -152,6 +155,7 @@ class CheckoutController extends Controller
         $total = 0;
 
         foreach ($cartItems as $item) {
+
             $total +=
                 $item->product->price *
                 $item->quantity;
@@ -164,8 +168,17 @@ class CheckoutController extends Controller
                 $request->coupon
             ) === 'COLIEN'
         ) {
+
             $total *= 0.9;
         }
+
+        // lưu địa chỉ
+        $address = Address::create([
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'is_default' => 1,
+            'user_id' => Auth::id(),
+        ]);
 
         // tạo order
         $order = Order::create([
@@ -173,7 +186,7 @@ class CheckoutController extends Controller
             'status' => 'pending',
             'total_money' => $total,
             'customer_id' => Auth::id(),
-            'address_id' => null,
+            'address_id' => $address->id,
         ]);
 
         // tạo order details
@@ -182,10 +195,13 @@ class CheckoutController extends Controller
             OrderDetail::create([
                 'quantity' =>
                 $item->quantity,
+
                 'price' =>
                 $item->product->price,
+
                 'order_id' =>
                 $order->id,
+
                 'product_id' =>
                 $item->product->id,
             ]);
@@ -196,7 +212,7 @@ class CheckoutController extends Controller
                 $item->quantity
             );
 
-            // xóa khỏi cart
+            // xoá cart
             $item->delete();
         }
 

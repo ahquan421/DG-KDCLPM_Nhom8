@@ -14,10 +14,24 @@ class OrderController extends Controller
 
         // Lấy danh sách đơn hàng của user kèm chi tiết
         $orders = Order::with(['orderDetails.product', 'address'])
-                       ->where('customer_id', $user->id)
-                       ->latest()
-                       ->get();
+            ->where('customer_id', $user->id)
+            ->latest()
+            ->get();
 
         return view('user.orders.index', compact('orders'));
+    }
+    public function show($id)
+    {
+        $order = \App\Models\Order::with(
+            'orderDetails.product',
+            'address'
+        )
+            ->where('customer_id', auth()->id())
+            ->findOrFail($id);
+
+        return view(
+            'user.orders.show',
+            compact('order')
+        );
     }
 }

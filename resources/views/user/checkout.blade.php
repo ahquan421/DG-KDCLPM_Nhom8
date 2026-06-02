@@ -3,7 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
     <title>Readora - Checkout</title>
 
     <link rel="stylesheet"
@@ -16,46 +18,66 @@
 
         <div class="product-wrapper">
 
-            <!-- Nút quay lại -->
+            <!-- nút quay lại -->
             <div class="back-box">
                 <a href="{{ route('user.cart.index') }}"
                     class="back-link">
+
                     ← Quay lại giỏ hàng
+
                 </a>
             </div>
 
-            <!-- Địa chỉ -->
-            <div class="content-card mb-4">
-
-                <h2 class="checkout-heading">
-                    📍 Địa Chỉ Nhận Hàng
-                </h2>
-
-                <div class="address-content">
-
-                    <strong>
-                        {{ Auth::user()->name ?? 'Người dùng' }}
-                    </strong>
-
-                    <p>
-                        Địa chỉ chưa cập nhật
-                    </p>
-
-                </div>
-
-            </div>
-
+            <!-- FORM PHẢI BỌC TOÀN BỘ -->
             <form method="POST"
                 action="{{ route('user.checkout.process', $book->id) }}">
 
                 @csrf
 
+                <!-- hidden quantity -->
                 <input type="hidden"
                     name="quantity"
                     id="hiddenQuantity"
                     value="1">
 
-                <!-- Sản phẩm -->
+                <!-- địa chỉ -->
+                <div class="content-card mb-4">
+
+                    <h2 class="checkout-heading">
+                        📍 Địa Chỉ Nhận Hàng
+                    </h2>
+
+                    <div class="address-content">
+
+                        <strong>
+                            {{ Auth::user()->name ?? 'Người dùng' }}
+                        </strong>
+
+                        <div style="margin-top:15px;">
+
+                            <input type="text"
+                                name="phone"
+                                class="checkout-input"
+                                placeholder="Nhập số điện thoại"
+                                required>
+
+                        </div>
+
+                        <div style="margin-top:15px;">
+
+                            <textarea
+                                name="address"
+                                class="checkout-input"
+                                placeholder="Nhập địa chỉ nhận hàng"
+                                required></textarea>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- sản phẩm -->
                 <div class="content-card mb-4">
 
                     <div class="checkout-table-header">
@@ -69,7 +91,7 @@
 
                     <div class="checkout-product">
 
-                        <!-- LEFT -->
+                        <!-- product -->
                         <div class="product-info">
 
                             <img src="{{ asset($book->image) }}"
@@ -91,14 +113,14 @@
 
                         </div>
 
-                        <!-- PRICE -->
+                        <!-- price -->
                         <div class="price-box">
 
                             {{ number_format($book->price) }} ₫
 
                         </div>
 
-                        <!-- QUANTITY -->
+                        <!-- quantity -->
                         <div>
 
                             <input type="number"
@@ -111,7 +133,7 @@
 
                         </div>
 
-                        <!-- TOTAL -->
+                        <!-- total -->
                         <div class="final-price">
 
                             <span id="thanhTien">
@@ -124,7 +146,7 @@
 
                 </div>
 
-                <!-- Lời nhắn + vận chuyển -->
+                <!-- lời nhắn + vận chuyển -->
                 <div class="content-card mb-4">
 
                     <div class="checkout-flex">
@@ -161,7 +183,7 @@
 
                 </div>
 
-                <!-- Voucher + tổng -->
+                <!-- tổng tiền -->
                 <div class="content-card">
 
                     <div class="mb-4">
@@ -181,21 +203,35 @@
                     <div class="checkout-summary">
 
                         <p>
+
                             Giá gốc:
+
                             <strong>
+
                                 <span id="giaGoc">
                                     {{ number_format($book->price) }}
-                                </span> ₫
+                                </span>
+
+                                ₫
+
                             </strong>
+
                         </p>
 
                         <p>
+
                             Tổng tiền:
+
                             <strong>
+
                                 <span id="tongTien">
                                     {{ number_format($book->price) }}
-                                </span> ₫
+                                </span>
+
+                                ₫
+
                             </strong>
+
                         </p>
 
                     </div>
@@ -244,7 +280,8 @@
                 const qty =
                     parseInt(quantityInput.value) || 1;
 
-                hiddenQuantity.value = qty;
+                hiddenQuantity.value =
+                    qty;
 
                 let total =
                     gia * qty;
@@ -252,7 +289,6 @@
                 let final =
                     total;
 
-                // mã giảm 10%
                 if (
                     couponInput.value
                     .trim()

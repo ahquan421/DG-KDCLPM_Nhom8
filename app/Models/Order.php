@@ -24,10 +24,6 @@ class Order extends Model
         'total_money' => 'decimal:2',
     ];
 
-    // ==========================
-    // RELATIONSHIPS
-    // ==========================
-
     public function customer()
     {
         return $this->belongsTo(
