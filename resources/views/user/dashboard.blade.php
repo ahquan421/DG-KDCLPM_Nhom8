@@ -19,27 +19,62 @@
                 <p>Discover thousands of books from top authors.</p>
                 <a href="#shop" class="btn">Read More</a>
             </div>
-            <div class="banner-right">
-                <img src="/images/banner-books.png" alt="Books">
+            <div class="book-grid">
+
+                <div class="book-card">
+                    <img src="{{ asset('images/book/brida.jpg') }}" alt="">
+                </div>
+
+                <div class="book-card">
+                    <img src="{{ asset('images/book/catcher_rye.jpg') }}" alt="">
+                </div>
+
+                <div class="book-card">
+                    <img src="{{ asset('images/book/clean_code.jpg') }}" alt="">
+                </div>
+
+                <div class="book-card">
+                    <img src="{{ asset('images/book/deep_work.jpg') }}" alt="">
+                </div>
+
+                <div class="book-card">
+                    <img src="{{ asset('images/book/dragon_tattoo.jpg') }}" alt="">
+                </div>
+
+                <div class="book-card">
+                    <img src="{{ asset('images/book/educated.jpg') }}" alt="">
+                </div>
+
+                <div class="book-card">
+                    <img src="{{ asset('images/book/gatsby.jpg') }}" alt="">
+                </div>
+
+                <div class="book-card">
+                    <img src="{{ asset('images/book/harry_potter_1.jpg') }}" alt="">
+                </div>
+
             </div>
         </div>
     </section>
 
-    <!-- Services -->
     <section class="services">
-        <div class="container services-container">
+        <div class="services-container">
+
             <div>
                 <h3>Reliable Shipping</h3>
                 <p>Fast and safe delivery nationwide.</p>
             </div>
+
             <div>
                 <h3>You’re Safe with Us</h3>
                 <p>Secure payment and data protection.</p>
             </div>
+
             <div>
                 <h3>Best Quality & Pricing</h3>
                 <p>Affordable books with high quality.</p>
             </div>
+
         </div>
     </section>
 
@@ -47,7 +82,14 @@
     <!-- Best Online Bookstore -->
     <section id="shop" class="bookstore">
         <div class="container">
-            <h2>BEST ONLINE BOOKSTORE TO BUY BOOK</h2>
+            <div class="section-title">
+                <span> Our Collection</span>
+                <h2>Find Your Next Great Read</h2>
+                <p>
+                    Discover bestselling books, timeless classics, and exclusive deals
+                    carefully selected for every reader.
+                </p>
+            </div>
             <div class="book-tabs">
                 <button class="tab active">Best Sellers</button>
                 <button class="tab">Bundles & Promotions</button>
@@ -79,12 +121,22 @@
         </div>
     </section>
 
-    <!-- Refer a Friend -->
     <section class="refer">
-        <div class="container text-center">
-            <h3>REFER A FRIEND</h3>
-            <p>And get <span>$30</span></p>
-            <button class="btn">Refer Here</button>
+        <div class="container">
+
+            <span class="refer-tag">Special Offer</span>
+
+            <h2>Share the Joy of Reading</h2>
+
+            <p>
+                Invite your friends to join our bookstore and enjoy exclusive
+                rewards on your next purchase.
+            </p>
+
+            <a href="#" class="btn">
+                Refer a Friend
+            </a>
+
         </div>
     </section>
 
